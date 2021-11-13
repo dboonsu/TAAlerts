@@ -19,6 +19,10 @@ if __name__ == '__main__':
     historical["diff"] = historical["50-day SMA"] > historical["200-day SMA"]
     historical["diff-next"] = historical["diff"].shift(1)
     historical["golden-cross"] = ((historical["diff"] == True) & (historical["diff-next"] == False))
+    historical["death-cross"] = ((historical["diff"] == False) & (historical["diff-next"] == True))
+
+    test = historical[historical["golden-cross"] == True]
+    print(test)
 
     historical.to_csv("historical.csv")
     fig, ax = plt.subplots()
@@ -27,4 +31,3 @@ if __name__ == '__main__':
     plt.plot(historical["200-day SMA"], "b--", label="200-day SMA")
     plt.show()
 
-    print(historical)
