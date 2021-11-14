@@ -12,6 +12,16 @@ def nMovingAverage(historical, n):
     historical[str(n) + "-day SMA"] = historical.Close.rolling(n, min_periods=n).mean()
     return historical
 
+def nPriceRateOfChange(historical, n):
+    # (ClosingPrice[p] - ClosingPrice[p-n])/ClosingPrice[p-n]
+    # Verify n not greater than period
+    if n > len(historical.Closing) - 1:
+        raise IndexError("n periods exceeds the amount of data available")
+    else:
+        # historical.Closing[-1] is the most recent closing data
+        return (historical.Closing[-1] - historical.Closing[-1 - n]) / historical.Closing[-1 - n]
+
+
 if __name__ == '__main__':
     historical = preprocess("SPY")
     historical = nMovingAverage(historical, 50)
