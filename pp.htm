@@ -1,32 +1,119 @@
+<!-- colors: blue - 004879, red - D22E1E-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>huh</title>
-<h1>huh</h1>
+<title>TAAlerts</title>
+<style>
+body {
+  background-color: #004879;
+  font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+  color: LightSteelBlue;
+}
+h1 {
+  color: #D22E1E;
+  font-size: 75px;
+  margin-left: 180px;
+  font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+}
+h2 {
+  color: LightSteelBlue;
+  font-size: 30px;
+  margin-left: 40px;
+}
+p {
+  color: LightSteelBlue;
+  font-size: 16px;
+  margin-left: 40px;
+}
+a:link {
+  color: PaleGreen;
+  text-decoration: underline;
+}
+a:visited {
+  color: SeaGreen;
+  text-decoration: underline;
+}
+a:hover {
+  color: tomato;
+  text-decoration: none;
+}
+.button {
+  border-radius: 8px;
+  background-color: Orchid;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: white;
+  color: Orchid;
+}
+input[type=text], select {
+  color: LightSteelBlue;
+  margin-left: 40px;
+}
+input[type=text], form {
+  color: LightSteelBlue;
+  margin-left: 40px;
+}
+img {
+  margin-left: 40px;
+}
+</style>
 </head>
-<body style="background-color:LightSteelBlue;">
 
-<h1>David</h1>
-<p>This is a paragraph.</p>
-<p style="color:red;">redddd</p>
-<h1 style="font-size:100px;">large</h1>
+<script>
+function getOption() {
+  var obj = document.getElementById("form");
+  document.getElementById("option").innerHTML = "You choice: " + obj.elements[0].value;
+}
+</script>
+
+<body>
+<h1>TAAlerts</h1>
+<h2><em>Techinical Analysis Alerts for tracking stocks.</em></h2>
+<p>What stock would you like to look at?</p>
+
+<p><form id="form" action="/action_page.php">
+  Stock Name/Abbreviation: <input type="text" name="fname">
+  <input type="button" class = "button" onclick="getOption()" value="Search">
+</form></p>
+
+<p id = option></p>
+
+<p> What would you like to look at? </p>
+
+<select id="dropdown" onchange="setPicture();">
+    <option value="/Users/angelazhu/Downloads/fig.png">ROC</option>
+    <option value="/Users/angelazhu/Downloads/rsi.png">RSI</option>
+</select>
+
+<br>
+<br>
+<img id = "fig" src = "/Users/angelazhu/Downloads/rsi.png" style = "display:none;">
+
+<br>
+
+<script type="text/javascript">
+    function setPicture() {
+      var img = document.getElementById("dropdown");
+      var value = img.options[img.selectedIndex].value;
+      document.getElementById('fig').src=value;
+      document.getElementById('fig').style.display = "block";
+    }
+</script>
+
 <hr>
-<p>Do not forget to buy <mark>milk</mark> today.</p>
-<em>This text is emphasized</em>
-<h1 style="background-color:powderblue;">This is a heading</h1>
-<p><a href="https://utdallas.edu"> you won a free ihpone!!!!</a></p>
-
-<h2>What Can JavaScript Do?</h2>
-
-<p>JavaScript can change HTML attribute values.</p>
-
-<p>In this case JavaScript changes the value of the src (source) attribute of an image.</p>
-
-<button onclick="document.getElementById('myImage').src='/Users/angelazhu/Desktop/IMG_1452.png'">Turn on the light</button>
-
-<img id="myImage" src="/Users/angelazhu/Desktop/IMG_1457.jpeg" style="width:100px">
-
-<button onclick="document.getElementById('myImage').src='/Users/angelazhu/Desktop/IMG_1457.jpeg'">Turn off the light</button>
+<p>Click here for more information about:</p>
+<p><a href = "https://www.investopedia.com/terms/d/deathcross.asp">
+  Death Crosses</a><p>
+<p><a href = "https://www.investopedia.com/terms/g/goldencross.asp">
+  Golden Crosses</a><p>
+<p><a href="https://www.investopedia.com/terms/p/pricerateofchange.asp">
+  ROC</a></p>
+<p><a href = "https://www.investopedia.com/terms/r/rsi.asp">
+  RSI</a></p>
 
 </body>
 </html>
