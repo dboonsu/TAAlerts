@@ -12,14 +12,25 @@ def nMovingAverage(historical, n):
     historical[str(n) + "-day SMA"] = historical.Close.rolling(n, min_periods=n).mean()
     return historical
 
-def nPriceRateOfChange(historical, n):
+def nPriceRateOfChange(historical, p, n):
     # (ClosingPrice[p] - ClosingPrice[p-n])/ClosingPrice[p-n]
+    # p is the most recent period
+    # n is the number of periods back you want to consider
+    
     # Verify n not greater than period
-    if n > len(historical.Closing) - 1:
-        raise IndexError("n periods exceeds the amount of data available")
-    else:
-        # historical.Closing[-1] is the most recent closing data
-        return (historical.Closing[-1] - historical.Closing[-1 - n]) / historical.Closing[-1 - n]
+    # That is, find the index of the pervious period
+    # use 0 for early periods
+    prev_period = 0 if p < n else p - n
+
+    return 100 * (historical.Close[p] - historical.Close[prev_period]) / historical.Close[prev_period]
+
+def nPriceRateOfChangeTotal(historical, n):
+    roc = []
+    for p in range(len(historical.Close)):
+        roc.append(nPriceRateOfChange(historical, p, n))
+    return roc
+        
+        
 
 
 if __name__ == '__main__':
@@ -33,7 +44,13 @@ if __name__ == '__main__':
 
     test = historical[historical["golden-cross"] == True]
     print(test)
-
+    
+    # Get Rate of Change at each period
+    historical["roc"] = nPriceRateOfChangeTotal(historical, 25)
+    plt.plot(historical.index, historical["roc"])
+    plt.title("Rate of Change n = 25")
+    plt.show()
+    
     historical.to_csv("historical.csv")
     fig, ax = plt.subplots()
     plt.plot(historical.index, historical["Close"])
