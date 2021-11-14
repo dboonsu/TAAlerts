@@ -30,8 +30,20 @@ def nPriceRateOfChangeTotal(historical, n):
         roc.append(nPriceRateOfChange(historical, p, n))
     return roc
         
+# Get a window (pos +- window) of the Close data
+def getCloseWindow(historical, pos, window):
+    begin = pos - window if window < pos else 0
+    end = pos + window if pos + window < len(historical.Close) else len(historical.Close)
+    return historical.Close[begin:end]
+    
+def getROCWindow(historical, pos, window, n):
+    str_name = 'roc-{}'.format(n)
+    begin = pos - window if window < pos else 0
+    end = pos + window if pos + window < len(historical[str_name]) else len(historical[str_name])
+    return historical[str_name][begin:end]
+    
         
-
+    
 
 if __name__ == '__main__':
     historical = preprocess("SPY")
@@ -46,10 +58,19 @@ if __name__ == '__main__':
     print(test)
     
     # Get Rate of Change at each period
-    historical["roc"] = nPriceRateOfChangeTotal(historical, 25)
-    plt.plot(historical.index, historical["roc"])
-    plt.title("Rate of Change n = 25")
+    historical["roc-25"] = nPriceRateOfChangeTotal(historical, 25)
+    plt.plot(historical.index, historical["roc-25"])
+    plt.title("Rate of Change n = 25 periods")
     plt.show()
+    
+    # Get a window of the Close prices
+    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+    ax1.plot(getCloseWindow(historical, 3000, 150))
+    ax2.plot(getROCWindow(historical, 3000, 150, 25))
+    ax1.set_title('Stock Closing Prices')
+    ax2.set_title('Rate of Change in Closing Prices')
+    fig.savefig('fig.png')
+    
     
     historical.to_csv("historical.csv")
     fig, ax = plt.subplots()
@@ -57,4 +78,3 @@ if __name__ == '__main__':
     plt.plot(historical["50-day SMA"], "r--", label="50-day SMA")
     plt.plot(historical["200-day SMA"], "b--", label="200-day SMA")
     plt.show()
-
